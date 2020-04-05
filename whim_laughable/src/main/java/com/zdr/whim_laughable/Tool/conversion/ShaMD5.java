@@ -1,5 +1,7 @@
 package com.zdr.whim_laughable.Tool.conversion;
 
+import org.springframework.stereotype.Component;
+
 import java.security.MessageDigest;
 
 /**
@@ -7,6 +9,7 @@ import java.security.MessageDigest;
  * @version 创建时间：2018-3-20 下午2:40:13
  * @introduction
  */
+@Component
 public class ShaMD5 {
 
 	

@@ -1,21 +1,20 @@
 package com.zdr.whim_laughable.Tool;
 
-import com.zdr.ahairteeter.demo.Main.Vo.ZUSER;
-import com.zdr.ahairteeter.demo.Tool.fileIO.IOLocalFile;
-import com.zdr.whim_laughable.Tool.fileIO.IOLocalFile;
-import net.sf.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.zdr.whim_laughable.Tool.conversion.MD5;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.openqa.selenium.WebDriver;
+import com.zdr.whim_laughable.Tool.conversion.ShaMD5;
+import com.zdr.whim_laughable.Tool.fileIO.IOLocalFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.zdr.whim_laughable.Tool.fileIO.IOLocalFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,6 +32,11 @@ public class Tool {
 	@Autowired
 	private  IOLocalFile IOLocalFile;
 
+	@Autowired
+	private MD5 md5;
+
+	@Autowired
+	private ShaMD5 ShaMD5;
 	//时间类型存储Map
 	private static Map<String, SimpleDateFormat> DTMap = new HashMap<String, SimpleDateFormat>();
 
@@ -256,6 +260,111 @@ public class Tool {
 		Listtestno3.toArray(textno3);
 		return textno3;
 	}
+
+
+	/////////////////////////////////////////////// 读取外部文件数据/////////////////////////////////////////////////////
+
+	/**
+	 * 查询指定文件需要显示的字段
+	 *
+	 * @param tableId
+	 * @return
+	 */
+//	protected List<String> getDisplayColumns(String tableId) {
+	public static List<String> getDisplayColumns(String tableId) {
+		List<Element> element = loadXml();
+		List<String> list = new ArrayList<String>();
+		for (Element elem : element) {
+			String thisTableId = elem.attributeValue("id");
+			if (thisTableId.equals(tableId)) {
+				list = readNode(elem, list);
+			}
+		}
+		return list;
+	}
+
+
+	public static void main(String[] args) {
+		File file = new File("");
+		String filePath = "";
+		try {
+			filePath = file.getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(filePath);
+	}
+
+	/**
+	 * 读取配置的通道的信息
+	 *
+	 * @return
+	 * @date 2017-5-2 上午11:38:27
+	 * @author
+	 */
+	public static List<Element> loadXml() {
+		SAXReader reader = new SAXReader();
+		File file = new File("");
+		String filePath = "";
+		try {
+			filePath = file.getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(filePath);
+
+		File filelocality = new File(filePath);
+		try {
+			Document document = reader.read(filelocality);
+			Element root = document.getRootElement();
+			List<Element> elements = root.elements();
+			// 查看配置了的每张表的显示列
+			List<String> list = new ArrayList<String>();
+			return elements;
+		} catch (DocumentException e) {
+			System.out.println("读取通道配置文件异常，请检查是否正确配置" + e);
+			return new ArrayList<Element>();
+		}
+	}
+
+	/**
+	 * 循环出配置文件中的设备表要显示的列
+	 *
+	 * @param element
+	 * @return
+	 * @date 2017-5-2 下午5:05:25
+	 * @author
+	 */
+	public static List<String> readNode(Element element, List<String> list) {
+		// System.out.println("---：：：：" + element.getName());
+
+		if (!("".equals(element.getTextTrim()))) {
+			// System.out.println("文本内容：：：：" + element.getText());
+			if ("column".equals(element.getName())) {
+				list.add(element.getText().trim());
+			}
+		}
+
+		List<Element> childElems = element.elements();
+		if (childElems != null && childElems.size() != 0) {
+			List<List<String>> tableNode = new ArrayList<List<String>>();
+			for (Element elem : childElems) {
+				// System.out.println("aaaa文本内容：：：：========"+element.getText());
+				tableNode.add(readNode(elem, list));
+			}
+		}
+		return list;
+	}
+
+///////////////////////////////////////////////数据加密解密方法/////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
 	//////////////////////////////////// 解析json方法s
 	//////////////////////////////////// ///////////////////////////////////////////////////////////////
