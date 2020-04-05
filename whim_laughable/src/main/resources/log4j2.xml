@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF" monitorInterval="1800">
+	<properties>
+		<!--<property name="LOG_HOME">E:/Database/LogBoot</property>-->
+		<property name="LOG_HOME">/WEB-INF/Boot</property>
+		<property name="FILE_NAME">finance-pay</property>
+	</properties>
+	<Appenders>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<ThresholdFilter level="info" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="running-INFOlog"
+			fileName="${LOG_HOME}/WhimLaughable/${date:yyyy-MM-dd}/LogsINFO${date:yyyy-MM-dd}.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log.gz"
+			immediateFlush="true">
+			 <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+
+		<RollingFile name="running-WARNlog"
+			fileName="${LOG_HOME}/AHairTeeterlogs/${date:yyyy-MM-dd}/LogsWARN${date:yyyy-MM-dd}.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log.gz"
+			immediateFlush="true">
+			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+
+	</Appenders>
+	<Loggers>
+		<Logger name="com.cssweb.test.app" level="trace"
+			additivity="true">
+			<AppenderRef ref="running-INFOlog" />
+		</Logger>
+
+		<Root level="all">
+			
+			<appender-ref ref="Console"/>
+             <appender-ref ref="running-INFOlog"/>
+             <appender-ref ref="running-WARNlog"/>
+
+		</Root>
+	</Loggers>
+</Configuration>
