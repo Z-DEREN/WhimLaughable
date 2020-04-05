@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WhimLaughableApplication {
 
     public static void main(String[] args) {
+        System.out.println(2333);
         SpringApplication.run(WhimLaughableApplication.class, args);
     }
 
