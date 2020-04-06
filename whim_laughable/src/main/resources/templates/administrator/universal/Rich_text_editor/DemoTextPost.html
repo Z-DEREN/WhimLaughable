@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提交</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/static/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/static/release/wangEditor.js"></script>
+</head>
+<body>
+
+<div id="div1">
+    <p>欢迎使用 wangEditor 编辑器</p>
+</div>
+
+<script>
+    var E = window.wangEditor
+    var editor = new E('#div1')
+    editor.create()
+
+    $(document).ready(function(){
+        var url = window.location.host;
+        $("button#btn1").click(function(){
+            //var datastring = "23333333";
+            var datastring = {
+                names : '123',
+                sex : 1 ,
+                text : editor.txt.html()
+            }
+            $.ajax({
+                    type: "POST",
+                    url: "postText",
+                    data: JSON.stringify(datastring),
+                    dataType:'json',
+                    contentType:"application/json",
+                    success: function(data, textStatus, jqXHR) {
+                        console.log(data)
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        if (textStatus && textStatus == "timeout") {
+                            confirm("网络超时，请重试！");
+                        }else{
+                            alert("提交结束");
+                        }
+                    }
+                }
+            );
+        });
+    });
+</script>
+
+
+
+<button id="btn1">发送一个 HTTP POST 请求页面并获取返回内容</button>
+
+
+<a data-gtm-event="" data-gtm-drawer="" data-gtm-interaction="" class="tds-btn tds-o-btn tds-btn--outline tds-btn--white" href="/cybertruck/design" title="" data-button-text-desktop="Order Now" data-button-text-mobile="Order Now" data-drupal-component-status="initialized">Order Now</a>
+
+
+
+</body>
+</html>
