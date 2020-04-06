@@ -60,44 +60,13 @@ public class Route {
 	 * 静态代码块 (存入缓存当中)
 	 */
 
-	public void MISinitialize(){
-
+	public static void MISinitialize(Tool tool){
 		List<String> route = tool.getDisplayColumns("route");
 		Address_dynamic_crawler_module = route.get(0);
-		warehouse_cookie_name = route.get(1);
-		warehouse_cookie_value = route.get(2);
-		Local_storage_address = route.get(3);
-		Picture_crawler = route.get(4);
-		mail_user = route.get(5);
-		mail_password = route.get(6);
-		IPAPI_KEY = route.get(7);
-		Xvideos_Cookie_value = route.get(8);
+		mail_user = route.get(1);
+		mail_password = route.get(2);
+		IPAPI_KEY = route.get(3);
 		
-		List<String> valueS = tool.getDisplayColumns("valueS");
-		warehouse_pagination = valueS.get(0);
-		Kr36_pagination =  valueS.get(1);
-		SssGif_pagination =  valueS.get(2);
-		Xvideos_pagination =  valueS.get(3);
-
-
-		Numeric_Types.put("cangku_F",PartitionInt(warehouse_pagination,0));
-		Numeric_Types.put("cangku_L",PartitionInt(warehouse_pagination,1));
-
-		Numeric_Types.put("Kr36_F",PartitionInt(Kr36_pagination,0));
-		Numeric_Types.put("Kr36_L",PartitionInt(Kr36_pagination,1));
-
-		Numeric_Types.put("SssGif_F",PartitionInt(SssGif_pagination,0));
-		Numeric_Types.put("SssGif_L",PartitionInt(SssGif_pagination,1));
-
-		Numeric_Types.put("Xvideos_F",PartitionInt(Xvideos_pagination,0));
-		Numeric_Types.put("Xvideos_L",PartitionInt(Xvideos_pagination,1));
-
-
-
-		
-//		for (String ss : Element) {
-//			System.out.println(ss);
-//		}
 	}
 
 

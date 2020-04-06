@@ -1,6 +1,10 @@
 package com.zdr.whim_laughable.Tool;
 
+import com.zdr.whim_laughable.Main.Vo.Upersonnel;
+import com.zdr.whim_laughable.Tool.PImeans.STApImeans;
 import com.zdr.whim_laughable.Tool.conversion.MD5;
+import com.zdr.whim_laughable.Tool.conversion.Route;
+import net.sf.json.JSONObject;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -9,6 +13,7 @@ import com.zdr.whim_laughable.Tool.conversion.ShaMD5;
 import com.zdr.whim_laughable.Tool.fileIO.IOLocalFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.zdr.whim_laughable.Tool.fileIO.IOLocalFile;
@@ -36,10 +41,13 @@ public class Tool {
 	private MD5 md5;
 
 	@Autowired
-	private ShaMD5 ShaMD5;
+	private STApImeans stapimeans;
+
+	@Autowired
+	private static Route route;
+
 	//时间类型存储Map
 	private static Map<String, SimpleDateFormat> DTMap = new HashMap<String, SimpleDateFormat>();
-
 
 	/**
 	 * 静态代码块 (存入缓存当中)
@@ -52,8 +60,19 @@ public class Tool {
 		DTMap.put("DT3", DT3);
 		DTMap.put("DT4", DT4);
 		DTMap.put("DT5", DT5);
-
 		//初始化 其他 逻辑
+
+		//初始化读取外部配置
+		route.MISinitialize(new Tool());
+	}
+
+	//统一睡眠方法
+	public static void sleep(int sec){
+		try {
+			Thread.sleep(1000 * sec );
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -188,6 +207,8 @@ public class Tool {
 	 */
 	public String Md5(String pass, String sha) {
 		ShaMD5 encoderSha = new ShaMD5(sha, "SHA");// 先加盐
+
+
 		String MD5 = encoderSha.encode(pass);// 后加加密值
 		return MD5;
 	}
@@ -201,36 +222,32 @@ public class Tool {
 	 *         账号密码加密
 	 *         数据库md5解密
 	 */
-	public ZUSER GetInfoEpilepsy(List<Object> EPKEY, String puzzlekey, ZUSER zuser) {
+	public Upersonnel GetInfoEpilepsy(List<Object> EPKEY, String puzzlekey, Upersonnel user) {
 		codec codec = new codec();
-		String MD5 = Md5(zuser.getPass());
+		String MD5 = Md5(user.getUPass());
 		String key = "";
 		String[] puzzKey = puzzlekey.split("");
 		String passMD5 = MD5;
 		for (int num = 0; num < puzzKey.length; num++) {
 			passMD5 = codec.puzzEncrypt(EPKEY.get(num).toString(), passMD5, puzzKey[num]);
 		}
-		String shaMD5 = Md5(zuser.getPass() + MD5, passMD5);
-//		System.out.println(shaMD5);
-
-		if (zuser.getZMD5().equals(shaMD5)) {
+		//加密后的密码
+		String shaMD5 = Md5(user.getUPass() + MD5, passMD5);
+		if (user.getUMD5().equals(shaMD5)) {
 			System.out.println("登录验证成功");
 			String USERTYPE = shaMD5;
 			for (int num = 0; num < puzzKey.length; num++) {
 				USERTYPE = codec.puzzEncrypt(EPKEY.get(num).toString(), USERTYPE, puzzKey[num]);
 			}
-
-//			System.out.println("用户登录状态标识:" + USERTYPE);
-			System.out.println("用户登录状态标识:" + USERTYPE.substring(0, zuser.getPass().length()));
-			zuser.setD7788b7e0ba4b6e3aa57b35bbf93dfc6(USERTYPE.substring(0, zuser.getPass().length()));
+			System.out.println("用户登录状态标识:" + USERTYPE.substring(0, user.getUPass().length()));
+			user.setUcondition(USERTYPE.substring(0, user.getUPass().length()));
 		} else {
 			System.out.println("登录验证失败,对访问者进行监视");
 
 		}
-		zuser.setZMD5("233333333");
-		zuser.setPass("233333333");
-
-		return zuser;
+		user.setUMD5("");
+		user.setUPass("233333333");
+		return user;
 	}
 
 	///////////////////////////////// 无需正则表达的split方法0///////////////////////////////////////////
@@ -313,7 +330,7 @@ public class Tool {
 		}
 		System.out.println(filePath);
 
-		File filelocality = new File(filePath);
+		File filelocality = new File(filePath+"\\configuration.xml");
 		try {
 			Document document = reader.read(filelocality);
 			Element root = document.getRootElement();
@@ -375,11 +392,11 @@ public class Tool {
 	 * @return
 	 */
 	public Map<String, Object> GetIPJsonMaps(String queryIP) {
-		callAPImeans callAPImeans = new callAPImeans();
+
 		String jsonString = "";
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			jsonString = callAPImeans.GetPOSTAPIinfo("http://apidata.chinaz.com/CallAPI/ip", "key="+rou.getIPAPI_KEY()+"&ip="+queryIP);
+			jsonString = stapimeans.GetPOSTAPIinfo("http://apidata.chinaz.com/CallAPI/ip", "key="+route.getIPAPI_KEY()+"&ip="+queryIP);
 		JSONObject object = JSONObject.fromObject(jsonString);// 将字符串转化成json对象
 		long StateCode = object.getLong("StateCode");
 		String Reason = object.getString("Reason");
@@ -411,42 +428,11 @@ public class Tool {
 		return map;
 	}
 
-//	public static void main(String[] args) {
-//		Tool Tool = new Tool();
-//		Tool.GetJsonMaps("");
-//	}
-
-	//统一睡眠方法
-	public static void sleep(int sec){
-		try {
-			Thread.sleep(1000 * sec );
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 
 
 
-	///////////////////////////////////////////////////爬虫自动化工具方法/////////////////////////////////////////////
 
-	public void closeWindow(WebDriver driver) {
-		try {
-			String winHandleBefore = driver.getWindowHandle();//关闭当前窗口前，获取当前窗口句柄
-			Set<String> winHandles = driver.getWindowHandles();//使用set集合获取所有窗口句柄
-			driver.close();//关闭窗口
-			Iterator<String> it = winHandles.iterator();//创建迭代器，迭代winHandles里的句柄
-			while (it.hasNext()) {//用it.hasNext()判断时候有下一个窗口,如果有就切换到下一个窗口
-				String win = it.next();//获取集合中的元素
-				if (!win.equals(winHandleBefore)) { //如果此窗口不是关闭前的窗口
-					driver.switchTo().window(win);//切换到新窗口
-					break;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 }
