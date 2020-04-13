@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+    <div class="container" >
+        <div class="header-data">
+            <div class="logo">
+                <a href="#" title=""><img src="/static/icons/pageyeblack/th.png" style="height: 36px ;width: 36px" alt=""></a>
+            </div><!--logo end-->
+            <div class="search-bar">
+                <form>
+                    <input type="text" name="search" placeholder="Search...">
+                    <button type="submit"><i class="la la-search"></i></button>
+                </form>
+            </div><!--search-bar end-->
+            <nav>
+                <ul>
+                    <li th:each="m : ${TypeList}">
+                        <a th:href="@{'/'+${m[tvalue]}}" th:text = "${m[table]}">
+                           <!-- <a th:href="@{'/navigation?table='+${m[tvalue]}}" th:text = "${m[table]}">-->
+                            <img src="/static/icons/pageyeblack/file.png" alt="">
+                           <!-- <span><img th:src="@{'/static/icons/pageyeblack/'+${m[icons]}}" alt=""></span>-->
+                        </a>
+                    </li>
+                    <!--<li>//导航栏下拉框
+                        <a href="profiles.html" title="">
+                            <span><img src="images/icon4.png" alt=""></span>
+                            Profiles
+                        </a>
+                        <ul>
+                            <li><a href="user-profile.html" title="">User Profile</a></li>
+                            <li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
+                        </ul>
+                    </li>-->
+                </ul>
+            </nav><!--nav end-->
+            <div class="menu-btn">
+                <a href="#" title=""><i class="fa fa-bars"></i></a>
+            </div><!--menu-btn end-->
+            <div class="user-account">
+                <div class="user-info">
+                    <img class = "Userheadpor" th:src="@{'/static/img/header/'+${Userheadpor}}" alt="">
+                    <a href="#" title="" th:text = "${UserName}"></a>
+                    <i class="la la-sort-down"></i>
+                </div>
+                <div class="user-account-settingss">
+
+                    <h3 class="tc"><a href="#" title="" text="注销"><img src="/static/icons/pageyeblack/signout.png" style="height: 36px ;width: 36px"   alt=""></a></h3>
+                </div><!--user-account-settingss end-->
+            </div>
+        </div><!--header-data end-->
+    </div>
+    </header>
+</div>
+</body>
+</html>

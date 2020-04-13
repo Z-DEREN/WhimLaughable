@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableScheduling
 
 @PropertySource(value = {
-        "file:F://rdzgsq//Database//ALi120//application.properties" }, ignoreResourceNotFound = false, encoding = "UTF-8", name = "application.properties")
+        "file:F://rdzgsq//Database//whim_laughable//application.properties" }, ignoreResourceNotFound = false, encoding = "UTF-8", name = "application.properties")
 public class WhimLaughableApplication extends SpringBootServletInitializer implements WebMvcConfigurer {
 
     private static final Logger logger = LogManager.getLogger(WhimLaughableApplication.class.getName());
@@ -29,7 +29,7 @@ public class WhimLaughableApplication extends SpringBootServletInitializer imple
         springApplication.setBannerMode(Banner.Mode.OFF);
         springApplication.run(args);
         logger.info("项目启动成功------------------------------"); // info级别的信息
-        logger.info("浏览器输入: http://127.0.0.1:8088/whim_laughable/home 进入主页");
+        logger.info("浏览器输入: http://127.0.0.1:8080/ 进入主页");
     }
 
     /**

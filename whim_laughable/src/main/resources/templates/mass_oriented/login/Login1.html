@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>登录</title>
+</head>
+<body>
+	<h2 th:text="${Time}"></h2>
+	<div class="container-fluid">
+		<!--表单-->
+		<div class="formBack" id="form">
+			<form class="col-md-10" method="post"
+				th:action="@{/login/dataValidation}">
+				<div class="form-group">
+					<input type="text" placeholder="02777dd215647ddc8b63844bc9f289cc"
+						name="02777dd215647ddc8b63844bc9f289cc">
+				</div>
+				<div>
+					<input type="password"
+						placeholder="d1320cebfd37f60f0faac45c613eb86c"
+						name="d1320cebfd37f60f0faac45c613eb86c">
+				</div>
+				<button type="submit">管他什么意思,点就完了</button>
+			</form>
+		</div>
+
+		<div>
+		<form th:action="@{/login}" method="post" class="am-form" >
+			<div  class="loginInput am-input-group am-u-lg-10 col-md-offset-2 am-form-icon am-form-feedback" style="margin-left: 0">
+				<div class="am-input-group-label"><i class="fa fa-phone fa-lg"></i></div>
+				<input type="text" name="username" class="am-form-field" id="phone" placeholder="手机号 座机也行">
+				<span id="phone_null" class="icons am-icon-warning" style="color: orange"></span>
+				<span id="phone_error" class="icons am-icon-times" style="color: red"></span>
+			</div>
+			<br>
+			<div class="loginInput am-input-group am-u-lg-10 col-md-offset-2 am-form-icon am-form-feedback" style="margin-left: 0">
+				<div class="am-input-group-label"><i class="fa fa-lock fa-lg"></i></div>
+				<input type="password" name="password" id="password" placeholder="这里才不是输入车牌号的呢">
+				<span id="password_null" class="icons am-icon-warning" style="color: orange"></span>
+			</div>
+			<br/>
+			<div class="am-u-lg-10 col-md-offset-2">
+				<label class="rememberMe" for="remember-me">
+					<input id="remember-me" type="checkbox">
+					记住十万年
+				</label>
+			</div>
+			<br>
+			<div class="am-input-group am-u-lg-10 col-md-offset-2" style="margin-left: 0">
+				<input type="submit" id="loginFormSubmit" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl" style="border-radius: 5px">
+				<!-- 按钮触发模态框 -->
+				<button type="button" class="am-btn am-btn-default am-btn-sm am-fr " data-am-modal="{target: '#my-alert'}" style="border-radius: 5px">
+					忘记密码 ^_^?
+				</button>
+			</div>
+			<div class="login_error" th:if="${param.error}">
+				<span class="am-alert am-alert-secondary" data-am-alert style="margin-left: 15%;background-color: #d85a37;color: white;border-radius: 5px">用户名不存在或密码错误!</span>
+			</div>
+		</form>
+		</div>
+
+	</div>
+</body>
+</html>
