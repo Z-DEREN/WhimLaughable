@@ -25,7 +25,7 @@
         <jstl-api>1.2</jstl-api>
         <selenium-chrome-driver>3.141.59</selenium-chrome-driver>
         <chromedriver>2.9</chromedriver>
-        <mina-core>2.0.7</mina-core>
+        <mina-core>2.1.5</mina-core>
         <dom4j>1.6.1</dom4j>
         <druid>1.1.10</druid>
     </properties>
